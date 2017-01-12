@@ -154,18 +154,22 @@ class allmodels:
 
         if self.modeltype == 'GB':
             Cvec = np.arange(10, 200, 20)
+            print "C gives the number of boosting steps"
         elif self.modeltype == 'LOG':
             Cvec = np.arange(-3, 4)
             Cvec = 10. ** Cvec
+            print "C gives the inverse of the regularization strength"
         elif self.modeltype == 'NN':
-            """C_vec contains regularization parameters"""
             Cvec = np.arange(-7, 1)
             Cvec = 10. ** Cvec
+            print "C gives the regularization strength"
         elif self.modeltype == 'RF':
             Cvec = np.arange(10, 200, 20)
+            print "C gives the number of decision trees in the forest"
         elif self.modeltype == 'SVM':
             Cvec = np.arange(0, 7)
             Cvec = 10. ** Cvec
+            print "C gives the inverse of the regularization strength"
 
         self.Cvec = Cvec
         self.n_C = len(Cvec)
