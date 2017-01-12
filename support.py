@@ -123,7 +123,7 @@ def plot_prediction(X, y_pred):
         ax.axis('off')
 
 
-def test_acc(mc, acc_cv, X_test, y_test):
+def test_acc(mc, acc_cv, X_cal, y_cal, X_test, y_test):
     inx = np.argmax(acc_cv)
     C = mc.Cvec[inx]
 
@@ -192,28 +192,32 @@ class allmodels:
         self.model = model
 
 
-"""load digit images and labels"""
-X, y = loaddata('digits.hdf5')
+if __name__ == '__main__':
 
-"""assign data to calibration, cross-validation and test sets"""
-cv_frac = 0.1
-test_frac = 0.1
-X_cal, y_cal, X_cv, y_cv, X_test, y_test = get_sets(X, y, cv_frac, test_frac)
+    """load digit images and labels"""
+    X, y = loaddata('digits.hdf5')
 
-"""initialize allmodels class for selected sklearn method"""
-mc = allmodels('SVM')
-mc.get_Cvec()
+    """assign data to calibration, cross-validation and test sets"""
+    cv_frac = 0.1
+    test_frac = 0.1
+    X_cal, y_cal, X_cv, y_cv, X_test, y_test = get_sets(X, y, cv_frac,
+                                                        test_frac)
 
-"""perform cross validation to select the best parameter"""
-acc_cv = cross_validate(mc, X_cal, y_cal, X_cv, y_cv)
+    """initialize allmodels class for selected sklearn method"""
+    mc = allmodels('SVM')
+    mc.get_Cvec()
 
-"""evaluate prediction accuracy with test data for best parameter selection"""
-y_test_pred = test_acc(mc, acc_cv, X_test, y_test)
+    """perform cross validation to select the best parameter"""
+    acc_cv = cross_validate(mc, X_cal, y_cal, X_cv, y_cv)
 
-"""plot the prediction accuracy versus digit"""
-plot_acc(y_test, y_test_pred)
+    """evaluate prediction accuracy with test data for best parameter
+    selection"""
+    y_test_pred = test_acc(mc, acc_cv, X_cal, y_cal, X_test, y_test)
 
-"""visualize success of prediction for a couple cases"""
-plot_prediction(X_test, y_test_pred)
+    """plot the prediction accuracy versus digit"""
+    plot_acc(y_test, y_test_pred)
 
-plt.show()
+    """visualize success of prediction for a couple cases"""
+    plot_prediction(X_test, y_test_pred)
+
+    plt.show()
